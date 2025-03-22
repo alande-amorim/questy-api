@@ -1,4 +1,13 @@
-import { Project, Task, Relations } from './';
+/**
+ * @fileoverview This file was generated automatically.
+ * @generated
+ * @see scripts/generate-domain-types.ts
+ */
+
+/* eslint-disable */
+import { Project } from '.';
+import { ProjectUser } from '.';
+import { Task } from '.';
 
 export namespace User {
   export interface Entity {
@@ -6,45 +15,55 @@ export namespace User {
     cognitoSub: string;
     name: string;
     email: string;
-    avatarUrl?: string;
+    avatarUrl: string;
     xp: number;
     level: number;
     createdAt: Date;
     updatedAt: Date;
+    projects: any;
+    memberships: any;
+    tasks: any;
+    createdTasks: any;
+    questPartnerTasks: any;
   }
 
   export interface WithRelations extends Entity {
     projects: Project.Entity[];
-    memberships: Relations.WithProjectUser[];
-    assignedTasks: Task.Entity[];
+    memberships: ProjectUser.Entity[];
+    tasks: Task.Entity[];
     createdTasks: Task.Entity[];
     questPartnerTasks: Task.Entity[];
-    xpTransactions: Relations.WithXPTransaction[];
-    aiInteractions: Relations.WithAIInteraction[];
-    notifications: Relations.WithNotification[];
   }
 
   export interface CreateDTO {
     cognitoSub: string;
     name: string;
     email: string;
-    avatarUrl?: string;
+    avatarUrl: string;
+    xp: number;
+    level: number;
+    createdAt: Date;
+    updatedAt: Date;
+    projects: any;
+    memberships: any;
+    tasks: any;
+    createdTasks: any;
+    questPartnerTasks: any;
   }
 
   export interface UpdateDTO {
+    cognitoSub?: string;
     name?: string;
     email?: string;
     avatarUrl?: string;
-  }
-
-  export interface ReadDTO extends Entity {
-    projects?: Project.Entity[];
-    memberships?: Relations.WithProjectUser[];
-    assignedTasks?: Task.Entity[];
-    createdTasks?: Task.Entity[];
-    questPartnerTasks?: Task.Entity[];
-    xpTransactions?: Relations.WithXPTransaction[];
-    aiInteractions?: Relations.WithAIInteraction[];
-    notifications?: Relations.WithNotification[];
+    xp?: number;
+    level?: number;
+    createdAt?: Date;
+    updatedAt?: Date;
+    projects?: any;
+    memberships?: any;
+    tasks?: any;
+    createdTasks?: any;
+    questPartnerTasks?: any;
   }
 }

@@ -23,12 +23,4 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
   },
-  overrides: [
-    {
-      files: ['src/domain/types/**/*.ts'],
-      rules: {
-        '@typescript-eslint/no-namespace': 'off',
-      },
-    },
-  ],
 };

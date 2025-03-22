@@ -1,16 +1,12 @@
-import { User, Project, Relations } from './';
+/**
+ * @fileoverview This file was generated automatically.
+ * @generated
+ * @see scripts/generate-domain-types.ts
+ */
 
-export enum TaskStatus {
-  BACKLOG = 'BACKLOG',
-  DOING = 'DOING',
-  DONE = 'DONE',
-}
-
-export enum Difficulty {
-  EASY = 'EASY',
-  MEDIUM = 'MEDIUM',
-  HARD = 'HARD',
-}
+/* eslint-disable */
+import { Project } from '.';
+import { User } from '.';
 
 export namespace Task {
   export interface Entity {
@@ -18,55 +14,63 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
-    status: TaskStatus;
-    difficulty: Difficulty;
+    status: any;
+    difficulty: any;
     storyPoints: number;
-    assigneeId?: string;
+    assigneeId: string;
     createdById: string;
-    questPartnerId?: string;
+    questPartnerId: string;
     aiGenerated: boolean;
     createdAt: Date;
     updatedAt: Date;
+    project: any;
+    assignee: any;
+    creator: any;
+    questPartner: any;
   }
 
   export interface WithRelations extends Entity {
     project: Project.Entity;
-    assignee?: User.Entity;
+    assignee: User.Entity;
     creator: User.Entity;
-    questPartner?: User.Entity;
-    xpTransactions: Relations.WithXPTransaction[];
-    aiInteractions: Relations.WithAIInteraction[];
+    questPartner: User.Entity;
   }
 
   export interface CreateDTO {
     projectId: string;
     title: string;
     description: string;
-    status?: TaskStatus;
-    difficulty?: Difficulty;
+    status: any;
+    difficulty: any;
     storyPoints: number;
-    assigneeId?: string;
+    assigneeId: string;
     createdById: string;
-    questPartnerId?: string;
-    aiGenerated?: boolean;
+    questPartnerId: string;
+    aiGenerated: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    project: any;
+    assignee: any;
+    creator: any;
+    questPartner: any;
   }
 
   export interface UpdateDTO {
+    projectId?: string;
     title?: string;
     description?: string;
-    status?: TaskStatus;
-    difficulty?: Difficulty;
+    status?: any;
+    difficulty?: any;
     storyPoints?: number;
     assigneeId?: string;
+    createdById?: string;
     questPartnerId?: string;
-  }
-
-  export interface ReadDTO extends Entity {
-    project?: Project.Entity;
-    assignee?: User.Entity;
-    creator?: User.Entity;
-    questPartner?: User.Entity;
-    xpTransactions?: Relations.WithXPTransaction[];
-    aiInteractions?: Relations.WithAIInteraction[];
+    aiGenerated?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
+    project?: any;
+    assignee?: any;
+    creator?: any;
+    questPartner?: any;
   }
 }
