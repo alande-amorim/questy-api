@@ -1,5 +1,4 @@
 /**
- * @fileoverview This file was generated automatically.
  * @generated
  * @see scripts/generate-domain-types.ts
  */

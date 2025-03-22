@@ -1,5 +1,4 @@
 /**
- * @fileoverview This file was generated automatically.
  * @generated
  * @see scripts/generate-domain-types.ts
  */
@@ -14,8 +13,8 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
-    status: any;
-    difficulty: any;
+    status: unknown;
+    difficulty: unknown;
     storyPoints: number;
     assigneeId: string;
     createdById: string;
@@ -23,10 +22,6 @@ export namespace Task {
     aiGenerated: boolean;
     createdAt: Date;
     updatedAt: Date;
-    project: any;
-    assignee: any;
-    creator: any;
-    questPartner: any;
   }
 
   export interface WithRelations extends Entity {
@@ -40,8 +35,8 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
-    status: any;
-    difficulty: any;
+    status: unknown;
+    difficulty: unknown;
     storyPoints: number;
     assigneeId: string;
     createdById: string;
@@ -49,18 +44,18 @@ export namespace Task {
     aiGenerated: boolean;
     createdAt: Date;
     updatedAt: Date;
-    project: any;
-    assignee: any;
-    creator: any;
-    questPartner: any;
+    project: unknown;
+    assignee: unknown;
+    creator: unknown;
+    questPartner: unknown;
   }
 
   export interface UpdateDTO {
     projectId?: string;
     title?: string;
     description?: string;
-    status?: any;
-    difficulty?: any;
+    status?: unknown;
+    difficulty?: unknown;
     storyPoints?: number;
     assigneeId?: string;
     createdById?: string;
@@ -68,9 +63,9 @@ export namespace Task {
     aiGenerated?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
-    project?: any;
-    assignee?: any;
-    creator?: any;
-    questPartner?: any;
+    project?: unknown;
+    assignee?: unknown;
+    creator?: unknown;
+    questPartner?: unknown;
   }
 }

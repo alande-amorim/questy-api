@@ -4,7 +4,7 @@ import * as path from 'path';
 import { getDMMF } from '@prisma/internals';
 
 const prisma = new PrismaClient();
-const outputDir = path.join(__dirname, '../src/domain/types');
+const outputDir = path.join(__dirname, '../src/shared/domain/types');
 
 const kebabCase = (str: string) => {
   return str
@@ -28,10 +28,10 @@ function convertPrismaType(type: string): string {
     Decimal: 'number',
     Boolean: 'boolean',
     DateTime: 'Date',
-    Json: 'any',
+    Json: 'unknown',
     Bytes: 'Buffer',
   };
-  return typeMap[type] || 'any';
+  return typeMap[type] || 'unknown';
 }
 
 // Helper to convert PascalCase to camelCase
@@ -59,7 +59,6 @@ function getRequiredImports(model: any): string[] {
 // Generate relations file
 function generateRelationsFile(models: readonly any[]) {
   const relations = `/**
- * @fileoverview This file was generated automatically.
  * @generated
  * @see scripts/generate-domain-types.ts
  */
@@ -114,6 +113,7 @@ async function generateEntityTypes() {
 
     // Generate Entity interface
     const entityFields = model.fields
+      .filter((field: any) => !field.relationName)
       .map((field: any) => {
         const type = convertPrismaType(field.type);
         const optional = field.isOptional ? '?' : '';
@@ -163,7 +163,6 @@ async function generateEntityTypes() {
       .join('\n');
 
     const content = `/**
- * @fileoverview This file was generated automatically.
  * @generated
  * @see scripts/generate-domain-types.ts
  */
@@ -206,7 +205,6 @@ function generateIndexFile() {
     .map((file) => file.replace('.ts', ''));
 
   const index = `/**
- * @fileoverview This file was generated automatically.
  * @generated
  * @see scripts/generate-domain-types.ts
  */

@@ -1,5 +1,4 @@
 /**
- * @fileoverview This file was generated automatically.
  * @generated
  * @see scripts/generate-domain-types.ts
  */
@@ -16,9 +15,6 @@ export namespace Project {
     description: string;
     createdBy: string;
     createdAt: Date;
-    creator: any;
-    users: any;
-    tasks: any;
   }
 
   export interface WithRelations extends Entity {
@@ -32,9 +28,9 @@ export namespace Project {
     description: string;
     createdBy: string;
     createdAt: Date;
-    creator: any;
-    users: any;
-    tasks: any;
+    creator: unknown;
+    users: unknown;
+    tasks: unknown;
   }
 
   export interface UpdateDTO {
@@ -42,8 +38,8 @@ export namespace Project {
     description?: string;
     createdBy?: string;
     createdAt?: Date;
-    creator?: any;
-    users?: any;
-    tasks?: any;
+    creator?: unknown;
+    users?: unknown;
+    tasks?: unknown;
   }
 }

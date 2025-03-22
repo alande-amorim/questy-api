@@ -1,5 +1,4 @@
 /**
- * @fileoverview This file was generated automatically.
  * @generated
  * @see scripts/generate-domain-types.ts
  */
@@ -20,11 +19,6 @@ export namespace User {
     level: number;
     createdAt: Date;
     updatedAt: Date;
-    projects: any;
-    memberships: any;
-    tasks: any;
-    createdTasks: any;
-    questPartnerTasks: any;
   }
 
   export interface WithRelations extends Entity {
@@ -44,11 +38,11 @@ export namespace User {
     level: number;
     createdAt: Date;
     updatedAt: Date;
-    projects: any;
-    memberships: any;
-    tasks: any;
-    createdTasks: any;
-    questPartnerTasks: any;
+    projects: unknown;
+    memberships: unknown;
+    tasks: unknown;
+    createdTasks: unknown;
+    questPartnerTasks: unknown;
   }
 
   export interface UpdateDTO {
@@ -60,10 +54,10 @@ export namespace User {
     level?: number;
     createdAt?: Date;
     updatedAt?: Date;
-    projects?: any;
-    memberships?: any;
-    tasks?: any;
-    createdTasks?: any;
-    questPartnerTasks?: any;
+    projects?: unknown;
+    memberships?: unknown;
+    tasks?: unknown;
+    createdTasks?: unknown;
+    questPartnerTasks?: unknown;
   }
 }
