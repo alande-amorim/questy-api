@@ -139,8 +139,11 @@ async function generateEntityTypes() {
       .filter(
         (field: any) =>
           !field.isId &&
+          !field.relationName &&
           !field.name.includes('created_at') &&
-          !field.name.includes('updated_at'),
+          !field.name.includes('updated_at') &&
+          !field.name.includes('createdAt') &&
+          !field.name.includes('updatedAt'),
       )
       .map((field: any) => {
         const type = convertPrismaType(field.type);
@@ -153,8 +156,11 @@ async function generateEntityTypes() {
       .filter(
         (field: any) =>
           !field.isId &&
+          !field.relationName &&
           !field.name.includes('created_at') &&
-          !field.name.includes('updated_at'),
+          !field.name.includes('updated_at') &&
+          !field.name.includes('createdAt') &&
+          !field.name.includes('updatedAt'),
       )
       .map((field: any) => {
         const type = convertPrismaType(field.type);

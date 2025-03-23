@@ -23,16 +23,10 @@ export namespace Project {
   export interface CreateDTO {
     name: string;
     description: string;
-    createdAt: Date;
-    users: unknown;
-    tasks: unknown;
   }
 
   export interface UpdateDTO {
     name?: string;
     description?: string;
-    createdAt?: Date;
-    users?: unknown;
-    tasks?: unknown;
   }
 }

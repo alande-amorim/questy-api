@@ -28,9 +28,6 @@ export namespace ProjectUser {
     invitedBy: string;
     invitedAt: Date;
     acceptedAt: Date;
-    createdAt: Date;
-    project: unknown;
-    user: unknown;
   }
 
   export interface UpdateDTO {
@@ -39,8 +36,5 @@ export namespace ProjectUser {
     invitedBy?: string;
     invitedAt?: Date;
     acceptedAt?: Date;
-    createdAt?: Date;
-    project?: unknown;
-    user?: unknown;
   }
 }

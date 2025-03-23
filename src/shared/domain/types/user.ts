@@ -29,11 +29,6 @@ export namespace User {
     name: string;
     email: string;
     avatarUrl: string;
-    createdAt: Date;
-    updatedAt: Date;
-    memberships: unknown;
-    assignedTasks: unknown;
-    reportedTasks: unknown;
   }
 
   export interface UpdateDTO {
@@ -41,10 +36,5 @@ export namespace User {
     name?: string;
     email?: string;
     avatarUrl?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    memberships?: unknown;
-    assignedTasks?: unknown;
-    reportedTasks?: unknown;
   }
 }

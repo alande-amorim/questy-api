@@ -37,11 +37,6 @@ export namespace Task {
     storyPoints: number;
     assigneeId: string;
     reporterId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    project: unknown;
-    assignee: unknown;
-    reporter: unknown;
   }
 
   export interface UpdateDTO {
@@ -53,10 +48,5 @@ export namespace Task {
     storyPoints?: number;
     assigneeId?: string;
     reporterId?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    project?: unknown;
-    assignee?: unknown;
-    reporter?: unknown;
   }
 }
