@@ -19,6 +19,7 @@ if (!fs.existsSync(outputDir)) {
 }
 
 // Helper to convert Prisma types to TypeScript types
+const enumTypes = [];
 function convertPrismaType(type: string): string {
   const typeMap: Record<string, string> = {
     String: 'string',
@@ -31,6 +32,9 @@ function convertPrismaType(type: string): string {
     Json: 'unknown',
     Bytes: 'Buffer',
   };
+  if (enumTypes.find((e) => e.name === type)) {
+    return type;
+  }
   return typeMap[type] || 'unknown';
 }
 
@@ -99,6 +103,9 @@ async function generateEntityTypes() {
   const schemaContent = fs.readFileSync(schemaPath, 'utf-8');
   const dmmf = await getDMMF({ datamodel: schemaContent });
 
+  // get enum types
+  enumTypes.push(...dmmf.datamodel.enums);
+
   // Filter only models (entities)
   const models = dmmf.datamodel.models;
 
@@ -110,6 +117,26 @@ async function generateEntityTypes() {
         ? imports.map((imp) => `import { ${imp} } from '.';`).join('\n') +
           '\n\n'
         : '';
+
+    // Generate Enums
+    const enumNames = model.fields
+      .filter(({ kind }) => kind === 'enum')
+      .map(({ type }) => type);
+
+    const modelEnums = enumNames.map((enumType) => {
+      const _enum = enumTypes.find((_enum) => {
+        return _enum.name === enumType;
+      });
+
+      // write const enum declaration to string
+      const enumDeclaration = `export const ${enumType} = {
+        ${_enum.values.map(({ name }) => `${name}: '${name}',`).join('\n')}
+      } as const;
+      export type ${enumType} = (typeof ${enumType})[keyof typeof ${enumType}];
+      `;
+
+      return enumDeclaration;
+    });
 
     // Generate Entity interface
     const entityFields = model.fields
@@ -190,6 +217,8 @@ ${createFields}
   export interface UpdateDTO {
 ${updateFields}
   }
+
+  ${modelEnums}
 }
 `;
 

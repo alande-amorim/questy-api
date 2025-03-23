@@ -37,4 +37,6 @@ export namespace User {
     email?: string;
     avatarUrl?: string;
   }
+
+  
 }

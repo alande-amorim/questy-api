@@ -13,7 +13,7 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
-    status: unknown;
+    status: TaskStatus;
     storyPoints: number;
     assigneeId: string;
     reporterId: string;
@@ -31,7 +31,7 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
-    status: unknown;
+    status: TaskStatus;
     storyPoints: number;
     assigneeId: string;
     reporterId: string;
@@ -41,9 +41,17 @@ export namespace Task {
     projectId?: string;
     title?: string;
     description?: string;
-    status?: unknown;
+    status?: TaskStatus;
     storyPoints?: number;
     assigneeId?: string;
     reporterId?: string;
   }
+
+  export const TaskStatus = {
+        BACKLOG: 'BACKLOG',
+DOING: 'DOING',
+DONE: 'DONE',
+      } as const;
+      export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus];
+      
 }

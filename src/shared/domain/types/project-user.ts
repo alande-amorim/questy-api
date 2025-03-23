@@ -37,4 +37,6 @@ export namespace ProjectUser {
     invitedAt?: Date;
     acceptedAt?: Date;
   }
+
+  
 }
