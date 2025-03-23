@@ -1,10 +1,8 @@
-import { Injectable } from '@nestjs/common';
 import { Project } from '#domain/types/project';
-import { IProjectsRepository } from '../interfaces';
+import { IProjectsRepo } from '../interfaces';
 
-@Injectable()
 export class ProjectsService {
-  constructor(private readonly projectsRepository: IProjectsRepository) {}
+  constructor(private readonly projectsRepository: IProjectsRepo) {}
 
   async create(data: Project.CreateDTO): Promise<Project.Entity> {
     return this.projectsRepository.create(data);
