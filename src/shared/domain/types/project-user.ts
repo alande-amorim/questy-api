@@ -11,7 +11,10 @@ export namespace ProjectUser {
   export interface Entity {
     projectId: string;
     userId: string;
-    joinedAt: Date;
+    invitedBy: string;
+    invitedAt: Date;
+    acceptedAt: Date;
+    createdAt: Date;
   }
 
   export interface WithRelations extends Entity {
@@ -22,7 +25,10 @@ export namespace ProjectUser {
   export interface CreateDTO {
     projectId: string;
     userId: string;
-    joinedAt: Date;
+    invitedBy: string;
+    invitedAt: Date;
+    acceptedAt: Date;
+    createdAt: Date;
     project: unknown;
     user: unknown;
   }
@@ -30,7 +36,10 @@ export namespace ProjectUser {
   export interface UpdateDTO {
     projectId?: string;
     userId?: string;
-    joinedAt?: Date;
+    invitedBy?: string;
+    invitedAt?: Date;
+    acceptedAt?: Date;
+    createdAt?: Date;
     project?: unknown;
     user?: unknown;
   }

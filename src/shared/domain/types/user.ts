@@ -4,7 +4,6 @@
  */
 
 /* eslint-disable */
-import { Project } from '.';
 import { ProjectUser } from '.';
 import { Task } from '.';
 
@@ -15,18 +14,14 @@ export namespace User {
     name: string;
     email: string;
     avatarUrl: string;
-    xp: number;
-    level: number;
     createdAt: Date;
     updatedAt: Date;
   }
 
   export interface WithRelations extends Entity {
-    projects?: Project.Entity[];
     memberships?: ProjectUser.Entity[];
-    tasks?: Task.Entity[];
-    createdTasks?: Task.Entity[];
-    questPartnerTasks?: Task.Entity[];
+    assignedTasks?: Task.Entity[];
+    reportedTasks?: Task.Entity[];
   }
 
   export interface CreateDTO {
@@ -34,15 +29,11 @@ export namespace User {
     name: string;
     email: string;
     avatarUrl: string;
-    xp: number;
-    level: number;
     createdAt: Date;
     updatedAt: Date;
-    projects: unknown;
     memberships: unknown;
-    tasks: unknown;
-    createdTasks: unknown;
-    questPartnerTasks: unknown;
+    assignedTasks: unknown;
+    reportedTasks: unknown;
   }
 
   export interface UpdateDTO {
@@ -50,14 +41,10 @@ export namespace User {
     name?: string;
     email?: string;
     avatarUrl?: string;
-    xp?: number;
-    level?: number;
     createdAt?: Date;
     updatedAt?: Date;
-    projects?: unknown;
     memberships?: unknown;
-    tasks?: unknown;
-    createdTasks?: unknown;
-    questPartnerTasks?: unknown;
+    assignedTasks?: unknown;
+    reportedTasks?: unknown;
   }
 }

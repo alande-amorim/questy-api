@@ -7,28 +7,16 @@
 import { User, Project, ProjectUser, Task } from '.';
 
 export namespace Relations {
-  export interface WithUserProjects {
-    projects: Project.Entity[];
-  }
-
   export interface WithUserMemberships {
     memberships: ProjectUser.Entity[];
   }
 
-  export interface WithUserTasks {
-    tasks: Task.Entity[];
+  export interface WithUserAssignedTasks {
+    assignedTasks: Task.Entity[];
   }
 
-  export interface WithUserCreatedTasks {
-    createdTasks: Task.Entity[];
-  }
-
-  export interface WithUserQuestPartnerTasks {
-    questPartnerTasks: Task.Entity[];
-  }
-
-  export interface WithProjectCreator {
-    creator: User.Entity;
+  export interface WithUserReportedTasks {
+    reportedTasks: Task.Entity[];
   }
 
   export interface WithProjectUsers {
@@ -55,11 +43,7 @@ export namespace Relations {
     assignee: User.Entity;
   }
 
-  export interface WithTaskCreator {
-    creator: User.Entity;
-  }
-
-  export interface WithTaskQuestPartner {
-    questPartner: User.Entity;
+  export interface WithTaskReporter {
+    reporter: User.Entity;
   }
 }

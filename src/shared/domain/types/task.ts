@@ -17,9 +17,7 @@ export namespace Task {
     difficulty: unknown;
     storyPoints: number;
     assigneeId: string;
-    createdById: string;
-    questPartnerId: string;
-    aiGenerated: boolean;
+    reporterId: string;
     createdAt: Date;
     updatedAt: Date;
   }
@@ -27,8 +25,7 @@ export namespace Task {
   export interface WithRelations extends Entity {
     project?: Project.Entity;
     assignee?: User.Entity;
-    creator?: User.Entity;
-    questPartner?: User.Entity;
+    reporter?: User.Entity;
   }
 
   export interface CreateDTO {
@@ -39,15 +36,12 @@ export namespace Task {
     difficulty: unknown;
     storyPoints: number;
     assigneeId: string;
-    createdById: string;
-    questPartnerId: string;
-    aiGenerated: boolean;
+    reporterId: string;
     createdAt: Date;
     updatedAt: Date;
     project: unknown;
     assignee: unknown;
-    creator: unknown;
-    questPartner: unknown;
+    reporter: unknown;
   }
 
   export interface UpdateDTO {
@@ -58,14 +52,11 @@ export namespace Task {
     difficulty?: unknown;
     storyPoints?: number;
     assigneeId?: string;
-    createdById?: string;
-    questPartnerId?: string;
-    aiGenerated?: boolean;
+    reporterId?: string;
     createdAt?: Date;
     updatedAt?: Date;
     project?: unknown;
     assignee?: unknown;
-    creator?: unknown;
-    questPartner?: unknown;
+    reporter?: unknown;
   }
 }
