@@ -14,7 +14,6 @@ export namespace Task {
     title: string;
     description: string;
     status: unknown;
-    difficulty: unknown;
     storyPoints: number;
     assigneeId: string;
     reporterId: string;
@@ -33,7 +32,6 @@ export namespace Task {
     title: string;
     description: string;
     status: unknown;
-    difficulty: unknown;
     storyPoints: number;
     assigneeId: string;
     reporterId: string;
@@ -44,7 +42,6 @@ export namespace Task {
     title?: string;
     description?: string;
     status?: unknown;
-    difficulty?: unknown;
     storyPoints?: number;
     assigneeId?: string;
     reporterId?: string;
