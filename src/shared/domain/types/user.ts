@@ -22,11 +22,11 @@ export namespace User {
   }
 
   export interface WithRelations extends Entity {
-    projects: Project.Entity[];
-    memberships: ProjectUser.Entity[];
-    tasks: Task.Entity[];
-    createdTasks: Task.Entity[];
-    questPartnerTasks: Task.Entity[];
+    projects?: Project.Entity[];
+    memberships?: ProjectUser.Entity[];
+    tasks?: Task.Entity[];
+    createdTasks?: Task.Entity[];
+    questPartnerTasks?: Task.Entity[];
   }
 
   export interface CreateDTO {

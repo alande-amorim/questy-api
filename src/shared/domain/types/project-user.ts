@@ -15,8 +15,8 @@ export namespace ProjectUser {
   }
 
   export interface WithRelations extends Entity {
-    project: Project.Entity;
-    user: User.Entity;
+    project?: Project.Entity;
+    user?: User.Entity;
   }
 
   export interface CreateDTO {

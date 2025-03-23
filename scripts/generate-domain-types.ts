@@ -130,7 +130,7 @@ async function generateEntityTypes() {
         const type = isArray
           ? `${relatedModel}.Entity[]`
           : `${relatedModel}.Entity`;
-        return `    ${field.name}: ${type};`;
+        return `    ${field.name}?: ${type};`;
       })
       .join('\n');
 

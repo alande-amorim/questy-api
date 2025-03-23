@@ -18,9 +18,9 @@ export namespace Project {
   }
 
   export interface WithRelations extends Entity {
-    creator: User.Entity;
-    users: ProjectUser.Entity[];
-    tasks: Task.Entity[];
+    creator?: User.Entity;
+    users?: ProjectUser.Entity[];
+    tasks?: Task.Entity[];
   }
 
   export interface CreateDTO {

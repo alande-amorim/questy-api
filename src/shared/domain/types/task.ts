@@ -25,10 +25,10 @@ export namespace Task {
   }
 
   export interface WithRelations extends Entity {
-    project: Project.Entity;
-    assignee: User.Entity;
-    creator: User.Entity;
-    questPartner: User.Entity;
+    project?: Project.Entity;
+    assignee?: User.Entity;
+    creator?: User.Entity;
+    questPartner?: User.Entity;
   }
 
   export interface CreateDTO {
