@@ -27,6 +27,7 @@ model Project {
   id          String   @id @default(uuid())
   name        String
   description String?
+  updatedAt   DateTime @updatedAt
   createdAt   DateTime @default(now())
 
   users ProjectUser[]
