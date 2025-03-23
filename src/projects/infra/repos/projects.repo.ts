@@ -1,14 +1,10 @@
-/**
- * @fileoverview Projects repository implementation
- */
-
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '#infra/prisma/prisma.service';
 import { Project } from '#domain/types/project';
-import { IProjectsRepository } from '../../application/interfaces/projects.repo.interface';
+import { IProjectsRepo } from '../../application/interfaces/projects.repo.interface';
 
 @Injectable()
-export class ProjectsRepository implements IProjectsRepository {
+export class ProjectsRepo implements IProjectsRepo {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Project.CreateDTO): Promise<Project.Entity> {
@@ -16,11 +12,6 @@ export class ProjectsRepository implements IProjectsRepository {
       data: {
         name: data.name,
         description: data.description,
-        creator: {
-          connect: {
-            id: data.createdBy,
-          },
-        },
       },
     });
   }
@@ -41,11 +32,6 @@ export class ProjectsRepository implements IProjectsRepository {
       data: {
         name: data.name,
         description: data.description,
-        creator: {
-          connect: {
-            id: data.createdBy,
-          },
-        },
       },
     });
   }

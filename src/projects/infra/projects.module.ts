@@ -7,12 +7,15 @@ import { ProjectsRepo } from '@projects/infra/repos/projects.repo';
   controllers: [ProjectsController],
   providers: [
     {
-      provide: ProjectsService,
-      useClass: ProjectsService,
-    },
-    {
       provide: 'IProjectsRepo',
       useClass: ProjectsRepo,
+    },
+    {
+      provide: ProjectsService,
+      inject: ['IProjectsRepo'],
+      useFactory: (projectsRepo: ProjectsRepo) => {
+        return new ProjectsService(projectsRepo);
+      },
     },
   ],
 })

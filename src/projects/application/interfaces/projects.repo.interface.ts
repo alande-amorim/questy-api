@@ -1,6 +1,6 @@
 import { Project } from '#domain/types/project';
 
-export interface IProjectsRepository {
+export interface IProjectsRepo {
   create(data: Project.CreateDTO): Promise<Project.Entity>;
   findById(id: string): Promise<Project.Entity | null>;
   findMany(): Promise<Project.Entity[]>;
