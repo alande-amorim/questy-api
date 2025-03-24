@@ -6,13 +6,24 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ProjectsService } from '../../application/services/projects.service';
 import { CreateProjectDTO, ProjectResponseDTO, UpdateProjectDTO } from './dtos';
 import { Project } from '#domain/types';
+import { AuthGuard } from '@auth/guards/auth.guard';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { Auth } from '#domain/types/auth';
 
 @ApiTags('projects')
+@ApiBearerAuth('access-token')
+@UseGuards(AuthGuard)
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
@@ -24,7 +35,10 @@ export class ProjectsController {
     description: 'Project created successfully',
     type: ProjectResponseDTO,
   })
-  async create(@Body() data: CreateProjectDTO): Promise<ProjectResponseDTO> {
+  async create(
+    @Body() data: CreateProjectDTO,
+    @CurrentUser() user: Auth.CognitoUser,
+  ): Promise<ProjectResponseDTO> {
     return this.projectsService.create(data);
   }
 
@@ -41,6 +55,7 @@ export class ProjectsController {
   })
   async findById(
     @Param('id') id: Project.Entity['id'],
+    @CurrentUser() user: Auth.CognitoUser,
   ): Promise<ProjectResponseDTO | null> {
     return this.projectsService.findById(id);
   }
@@ -52,7 +67,9 @@ export class ProjectsController {
     description: 'List of projects',
     type: [ProjectResponseDTO],
   })
-  async findMany(): Promise<ProjectResponseDTO[]> {
+  async findMany(
+    @CurrentUser() user: Auth.CognitoUser,
+  ): Promise<ProjectResponseDTO[]> {
     return this.projectsService.findMany();
   }
 
@@ -70,6 +87,7 @@ export class ProjectsController {
   async update(
     @Param('id') id: Project.Entity['id'],
     @Body() data: UpdateProjectDTO,
+    @CurrentUser() user: Auth.CognitoUser,
   ): Promise<ProjectResponseDTO> {
     return this.projectsService.update(id, data);
   }
@@ -84,7 +102,10 @@ export class ProjectsController {
     status: 404,
     description: 'Project not found',
   })
-  async delete(@Param('id') id: Project.Entity['id']): Promise<void> {
+  async delete(
+    @Param('id') id: Project.Entity['id'],
+    @CurrentUser() user: Auth.CognitoUser,
+  ): Promise<void> {
     return this.projectsService.delete(id);
   }
 }

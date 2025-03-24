@@ -6,6 +6,12 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Enable CORS
+  app.enableCors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+  });
+
   // Enable global validation
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,7 +25,20 @@ async function bootstrap() {
     .setTitle('Questy API')
     .setDescription('API documentation for Questy')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        description: 'Enter JWT token (Bearer <token>)',
+        in: 'header',
+      },
+      'access-token',
+    )
+    .addTag('auth')
     .addTag('projects')
+    .addTag('tasks')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

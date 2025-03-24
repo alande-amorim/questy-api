@@ -20,7 +20,9 @@
     "paths": {
       "#domain/*": ["src/shared/domain/*"],
       "#infra/*": ["src/shared/infra/*"],
-      "@projects/*": ["src/projects/*"]
+      "@auth/*": ["src/auth/*"],
+      "@projects/*": ["src/projects/*"],
+      "@tasks/*": ["src/tasks/*"]
     }
   }
 }
