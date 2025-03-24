@@ -1,5 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsEnum, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsEnum,
+  IsNumber,
+  Min,
+  Max,
+  IsUUID,
+  Length,
+  IsOptional,
+} from 'class-validator';
 import { Task } from '#domain/types';
 
 export class CreateTaskDTO implements Task.CreateDTO {
@@ -9,6 +19,7 @@ export class CreateTaskDTO implements Task.CreateDTO {
   })
   @IsString()
   @IsNotEmpty()
+  @Length(3, 100, { message: 'Title must be between 3 and 100 characters' })
   title: string;
 
   @ApiProperty({
@@ -17,6 +28,9 @@ export class CreateTaskDTO implements Task.CreateDTO {
   })
   @IsString()
   @IsNotEmpty()
+  @Length(10, 1000, {
+    message: 'Description must be between 10 and 1000 characters',
+  })
   description: string;
 
   @ApiProperty({
@@ -32,7 +46,7 @@ export class CreateTaskDTO implements Task.CreateDTO {
     description: 'Project ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
   projectId: string;
 
@@ -42,21 +56,23 @@ export class CreateTaskDTO implements Task.CreateDTO {
   })
   @IsNumber()
   @IsNotEmpty()
+  @Min(0, { message: 'Story points must be a positive number' })
+  @Max(100, { message: 'Story points cannot exceed 100' })
   storyPoints: number;
 
   @ApiProperty({
     description: 'Assignee ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @IsString()
-  @IsNotEmpty()
-  assigneeId: string;
+  @IsUUID()
+  @IsOptional()
+  assigneeId?: string;
 
   @ApiProperty({
     description: 'Reporter ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
   reporterId: string;
 }

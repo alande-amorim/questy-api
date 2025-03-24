@@ -22,8 +22,9 @@ export class ProjectResponseDTO implements Project.Entity {
   @ApiProperty({
     description: 'Project description',
     example: 'A project description',
+    required: false,
   })
-  description: string;
+  description?: string;
 
   @ApiProperty({
     description: 'Project creation date',
