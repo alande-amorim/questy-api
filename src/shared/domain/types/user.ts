@@ -13,7 +13,7 @@ export namespace User {
     cognitoSub: string;
     name: string;
     email: string;
-    avatarUrl: string;
+    avatarUrl?: string;
     createdAt: Date;
     updatedAt: Date;
   }
@@ -28,7 +28,7 @@ export namespace User {
     cognitoSub: string;
     name: string;
     email: string;
-    avatarUrl: string;
+    avatarUrl?: string;
   }
 
   export interface UpdateDTO {

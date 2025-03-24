@@ -11,7 +11,7 @@ export namespace Project {
   export interface Entity {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     updatedAt: Date;
     createdAt: Date;
   }
@@ -23,7 +23,7 @@ export namespace Project {
 
   export interface CreateDTO {
     name: string;
-    description: string;
+    description?: string;
   }
 
   export interface UpdateDTO {

@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 import { getDMMF } from '@prisma/internals';
+import { DMMF } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient();
 const outputDir = path.join(__dirname, '../src/shared/domain/types');
@@ -48,7 +49,7 @@ function getRequiredImports(model: any): string[] {
   const imports = new Set<string>();
 
   // Check fields for relations
-  model.fields.forEach((field: any) => {
+  model.fields.forEach((field: DMMF.Field) => {
     if (field.relationName) {
       const relatedModel = field.type;
       if (relatedModel !== model.name) {
@@ -74,8 +75,8 @@ export namespace Relations {
 ${models
   .map((model) => {
     const relationFields = model.fields
-      .filter((field: any) => field.relationName)
-      .map((field: any) => {
+      .filter((field: DMMF.Field) => field.relationName)
+      .map((field: DMMF.Field) => {
         const relatedModel = field.type;
         const isArray = field.isList;
         const type = isArray
@@ -140,18 +141,18 @@ async function generateEntityTypes() {
 
     // Generate Entity interface
     const entityFields = model.fields
-      .filter((field: any) => !field.relationName)
-      .map((field: any) => {
+      .filter((field: DMMF.Field) => !field.relationName)
+      .map((field: DMMF.Field) => {
         const type = convertPrismaType(field.type);
-        const optional = field.isOptional ? '?' : '';
+        const optional = field.isRequired ? '' : '?';
         return `    ${field.name}${optional}: ${type};`;
       })
       .join('\n');
 
     // Generate WithRelations interface
     const relationFields = model.fields
-      .filter((field: any) => field.relationName)
-      .map((field: any) => {
+      .filter((field: DMMF.Field) => field.relationName)
+      .map((field: DMMF.Field) => {
         const relatedModel = field.type;
         const isArray = field.isList;
         const type = isArray
@@ -164,7 +165,7 @@ async function generateEntityTypes() {
     // Generate DTOs
     const createFields = model.fields
       .filter(
-        (field: any) =>
+        (field: DMMF.Field) =>
           !field.isId &&
           !field.relationName &&
           !field.name.includes('created_at') &&
@@ -172,16 +173,16 @@ async function generateEntityTypes() {
           !field.name.includes('createdAt') &&
           !field.name.includes('updatedAt'),
       )
-      .map((field: any) => {
+      .map((field: DMMF.Field) => {
         const type = convertPrismaType(field.type);
-        const optional = field.isOptional ? '?' : '';
+        const optional = field.isRequired ? '' : '?';
         return `    ${field.name}${optional}: ${type};`;
       })
       .join('\n');
 
     const updateFields = model.fields
       .filter(
-        (field: any) =>
+        (field: DMMF.Field) =>
           !field.isId &&
           !field.relationName &&
           !field.name.includes('created_at') &&
@@ -189,7 +190,7 @@ async function generateEntityTypes() {
           !field.name.includes('createdAt') &&
           !field.name.includes('updatedAt'),
       )
-      .map((field: any) => {
+      .map((field: DMMF.Field) => {
         const type = convertPrismaType(field.type);
         return `    ${field.name}?: ${type};`;
       })

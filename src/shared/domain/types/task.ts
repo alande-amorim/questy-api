@@ -15,7 +15,7 @@ export namespace Task {
     description: string;
     status: TaskStatus;
     storyPoints: number;
-    assigneeId: string;
+    assigneeId?: string;
     reporterId: string;
     createdAt: Date;
     updatedAt: Date;
@@ -33,7 +33,7 @@ export namespace Task {
     description: string;
     status: TaskStatus;
     storyPoints: number;
-    assigneeId: string;
+    assigneeId?: string;
     reporterId: string;
   }
 
