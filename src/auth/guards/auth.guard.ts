@@ -7,13 +7,17 @@ import {
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { Auth } from '#domain/types/auth';
 import { ConfigService } from '@nestjs/config';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private verifier: any;
+  private jwtVerifier: any;
 
-  constructor(private configService: ConfigService) {
-    this.verifier = CognitoJwtVerifier.create({
+  constructor(
+    private configService: ConfigService,
+    private authService: AuthService,
+  ) {
+    this.jwtVerifier = CognitoJwtVerifier.create({
       userPoolId: this.configService.get('COGNITO_USER_POOL_ID'),
       tokenUse: 'access',
       clientId: this.configService.get('COGNITO_CLIENT_ID'),
@@ -29,8 +33,9 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.verifier.verify(token);
-      request.user = this.mapJwtPayloadToCognitoUser(payload);
+      const payload = await this.jwtVerifier.verify(token);
+      const user = await this.authService.getUser(token);
+      request.user = user;
       return true;
     } catch (error) {
       throw new UnauthorizedException('Invalid token');

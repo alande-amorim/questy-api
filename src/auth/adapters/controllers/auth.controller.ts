@@ -1,5 +1,11 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AuthService } from '../../services/auth.service';
 import {
   AuthResponseDTO,
@@ -7,11 +13,63 @@ import {
   SignupRequestDTO,
   ConfirmSignupRequestDTO,
 } from './dtos';
+import { CurrentUser } from '../../decorators/current-user.decorator';
+import { Auth } from '#domain/types/auth';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('me')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get current user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Current user details',
+    schema: {
+      type: 'object',
+      properties: {
+        sub: {
+          type: 'string',
+          example: '123e4567-e89b-12d3-a456-426614174000',
+        },
+        email: {
+          type: 'string',
+          example: 'user@example.com',
+        },
+        name: {
+          type: 'string',
+          example: 'John Doe',
+        },
+        email_verified: {
+          type: 'boolean',
+          example: true,
+        },
+        cognito: {
+          type: 'object',
+          properties: {
+            username: {
+              type: 'string',
+              example: 'user@example.com',
+            },
+            groups: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+              example: [],
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiBearerAuth('access-token')
+  async me(@CurrentUser() user: Auth.CognitoUser): Promise<Auth.CognitoUser> {
+    return user;
+  }
 
   @Post('signup')
   @ApiOperation({ summary: 'Sign up a new user with Cognito' })
