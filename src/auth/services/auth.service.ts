@@ -1,15 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { decode } from 'jsonwebtoken';
 import { Auth } from '#domain/types/auth';
-import { UserRepo } from '../infra/repos/user.repo';
-import { CognitoService } from './cognito.service';
 import { User } from '#domain/types';
+import { ICognitoService } from '#domain/interfaces/cognito.interface';
+import { IUsersRepo } from '#domain/interfaces/users-repo.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userRepo: UserRepo,
-    private cognitoService: CognitoService,
+    private cognitoService: ICognitoService,
+    private userRepo: IUsersRepo,
   ) {}
 
   /**

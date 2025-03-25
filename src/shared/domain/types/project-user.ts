@@ -11,6 +11,7 @@ export namespace ProjectUser {
   export interface Entity {
     projectId: string;
     userId: string;
+    inviteToken?: string;
     invitedBy?: string;
     invitedAt?: Date;
     acceptedAt?: Date;
@@ -25,6 +26,7 @@ export namespace ProjectUser {
   export interface CreateDTO {
     projectId: string;
     userId: string;
+    inviteToken?: string;
     invitedBy?: string;
     invitedAt?: Date;
     acceptedAt?: Date;
@@ -33,6 +35,7 @@ export namespace ProjectUser {
   export interface UpdateDTO {
     projectId?: string;
     userId?: string;
+    inviteToken?: string;
     invitedBy?: string;
     invitedAt?: Date;
     acceptedAt?: Date;

@@ -10,10 +10,9 @@ import { Task } from '.';
 export namespace User {
   export interface Entity {
     id: string;
-    cognitoSub: string;
+    cognitoSub?: string;
     name: string;
     email: string;
-    avatarUrl?: string;
     createdAt: Date;
     updatedAt: Date;
   }
@@ -25,17 +24,15 @@ export namespace User {
   }
 
   export interface CreateDTO {
-    cognitoSub: string;
+    cognitoSub?: string;
     name: string;
     email: string;
-    avatarUrl?: string;
   }
 
   export interface UpdateDTO {
     cognitoSub?: string;
     name?: string;
     email?: string;
-    avatarUrl?: string;
   }
 
   

@@ -9,10 +9,9 @@ datasource db {
 
 model User {
   id         String   @id @default(uuid())
-  cognitoSub String   @unique
+  cognitoSub String?  @unique
   name       String
   email      String   @unique
-  avatarUrl  String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -37,12 +36,13 @@ model Project {
 }
 
 model ProjectUser {
-  projectId  String
-  userId     String
-  invitedBy  String?
-  invitedAt  DateTime?
-  acceptedAt DateTime?
-  createdAt  DateTime  @default(now())
+  projectId   String
+  userId      String
+  inviteToken String?
+  invitedBy   String?
+  invitedAt   DateTime?
+  acceptedAt  DateTime?
+  createdAt   DateTime  @default(now())
 
   project Project @relation(fields: [projectId], references: [id])
   user    User    @relation(fields: [userId], references: [id])

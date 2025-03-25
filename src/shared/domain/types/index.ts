@@ -4,6 +4,7 @@
  */
 
 /* eslint-disable */
+export * from './auth';
 export * from './project-user';
 export * from './project';
 export * from './relations';

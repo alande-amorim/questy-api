@@ -1,5 +1,8 @@
 import { Auth } from '#domain/types/auth';
 import {
+  AdminCreateUserCommand,
+  AdminCreateUserCommandOutput,
+  AdminSetUserPasswordCommand,
   CognitoIdentityProviderClient,
   ConfirmSignUpCommand,
   GetUserCommand,
@@ -10,9 +13,10 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ICognitoService } from '#domain/interfaces/cognito.interface';
 
 @Injectable()
-export class CognitoService {
+export class CognitoService implements ICognitoService {
   private cognitoClient: CognitoIdentityProviderClient;
   private clientId: string;
   private userPoolId: string;
@@ -104,5 +108,42 @@ export class CognitoService {
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
+  }
+
+  async createUser(
+    data: Auth.SignupRequest,
+  ): Promise<AdminCreateUserCommandOutput> {
+    const createUserCommand = new AdminCreateUserCommand({
+      UserPoolId: this.configService.get('AWS_COGNITO_USER_POOL_ID'),
+      Username: data.email,
+      UserAttributes: [
+        {
+          Name: 'email',
+          Value: data.email,
+        },
+        {
+          Name: 'name',
+          Value: data.name,
+        },
+        {
+          Name: 'email_verified',
+          Value: 'true',
+        },
+      ],
+    });
+
+    const cognitoUser = await this.cognitoClient.send(createUserCommand);
+
+    // sets the user password
+    const setPasswordCommand = new AdminSetUserPasswordCommand({
+      UserPoolId: this.configService.get('AWS_COGNITO_USER_POOL_ID'),
+      Username: data.email,
+      Password: data.password,
+      Permanent: true,
+    });
+
+    await this.cognitoClient.send(setPasswordCommand);
+
+    return cognitoUser;
   }
 }
