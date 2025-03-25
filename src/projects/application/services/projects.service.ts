@@ -26,7 +26,7 @@ export class ProjectsService {
     return project;
   }
 
-  async findById(id: string): Promise<Project.Entity | null> {
+  async findById(id: string): Promise<Project.WithRelations | null> {
     return this.projectsRepo.findById(id);
   }
 

@@ -12,7 +12,12 @@ import {
 } from 'class-validator';
 import { Task } from '#domain/types';
 
-export class CreateTaskDTO implements Task.CreateDTO {
+interface ICreateTaskDTO
+  extends Omit<Task.CreateDTO, 'reporterId' | 'projectId'> {
+  reporterId?: string;
+}
+
+export class CreateTaskDTO implements ICreateTaskDTO {
   @ApiProperty({
     description: 'Task title',
     example: 'Implement feature X',
@@ -43,14 +48,6 @@ export class CreateTaskDTO implements Task.CreateDTO {
   status: Task.TaskStatus;
 
   @ApiProperty({
-    description: 'Project ID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @IsUUID()
-  @IsNotEmpty()
-  projectId: string;
-
-  @ApiProperty({
     description: 'Story points',
     example: 5,
   })
@@ -73,6 +70,6 @@ export class CreateTaskDTO implements Task.CreateDTO {
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @IsUUID()
-  @IsNotEmpty()
-  reporterId: string;
+  @IsOptional()
+  reporterId?: string;
 }

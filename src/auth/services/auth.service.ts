@@ -16,13 +16,7 @@ export class AuthService {
    * @TODO: upsert user into database?
    */
   async signUp(signUpRequest: Auth.SignupRequest): Promise<void> {
-    const signupResponse = await this.cognitoService.signUp(signUpRequest);
-    console.log(signupResponse);
-    // await this.syncUser({
-    //   sub: signupResponse.UserSub,
-    //   email: signUpRequest.email,
-    //   name: signUpRequest.name,
-    // });
+    await this.cognitoService.signUp(signUpRequest);
   }
 
   async confirmSignUp(

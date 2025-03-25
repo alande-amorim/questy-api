@@ -2,7 +2,6 @@ import { Auth } from '#domain/types/auth';
 import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
-  AdminSetUserPasswordCommand,
   CognitoIdentityProviderClient,
   ConfirmSignUpCommand,
   GetUserCommand,
@@ -129,24 +128,9 @@ export class CognitoService implements ICognitoService {
         ],
       });
 
-      const cognitoUser = await this.cognitoClient.send(createUserCommand);
-
-      // do we need this?
-      if (false) {
-        const setPasswordCommand = new AdminSetUserPasswordCommand({
-          UserPoolId: this.configService.get('COGNITO_USER_POOL_ID'),
-          Username: data.email,
-          Password: data.password,
-          Permanent: true,
-        });
-
-        await this.cognitoClient.send(setPasswordCommand);
-      }
-
-      return cognitoUser;
+      return await this.cognitoClient.send(createUserCommand);
     } catch (error) {
-      console.log(error);
-      throw new Error('Error creating authentication');
+      throw new Error('Error creating authentication:' + error);
     }
   }
 }
