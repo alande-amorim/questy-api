@@ -18,8 +18,8 @@ import { ProjectsService } from '../../application/services/projects.service';
 import { CreateProjectDTO, ProjectResponseDTO, UpdateProjectDTO } from './dtos';
 import { Project } from '#domain/types';
 import { AuthGuard } from '@auth/guards/auth.guard';
-import { CurrentUser } from 'src/auth/current-user.decorator';
 import { Auth } from '#domain/types/auth';
+import { CurrentUser } from '@auth/decorators/current-user.decorator';
 
 @ApiTags('projects')
 @ApiBearerAuth('access-token')
@@ -37,7 +37,7 @@ export class ProjectsController {
   })
   async create(
     @Body() data: CreateProjectDTO,
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO> {
     return this.projectsService.create(data);
   }
@@ -55,7 +55,7 @@ export class ProjectsController {
   })
   async findById(
     @Param('id') id: Project.Entity['id'],
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO | null> {
     return this.projectsService.findById(id);
   }
@@ -68,7 +68,7 @@ export class ProjectsController {
     type: [ProjectResponseDTO],
   })
   async findMany(
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO[]> {
     return this.projectsService.findMany();
   }
@@ -87,7 +87,7 @@ export class ProjectsController {
   async update(
     @Param('id') id: Project.Entity['id'],
     @Body() data: UpdateProjectDTO,
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO> {
     return this.projectsService.update(id, data);
   }
@@ -104,7 +104,7 @@ export class ProjectsController {
   })
   async delete(
     @Param('id') id: Project.Entity['id'],
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<void> {
     return this.projectsService.delete(id);
   }

@@ -1,27 +1,10 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { User as UserModel } from '#domain/types/user';
 export namespace Auth {
-  export interface CognitoUser {
+  export interface ProviderUser {
     sub: string;
     email: string;
     name: string;
-    email_verified: boolean;
-    cognito: {
-      username: string;
-      groups: string[];
-    };
-  }
-
-  export interface JwtPayload {
-    sub: string;
-    email: string;
-    name: string;
-    email_verified: boolean;
-    cognito: {
-      username: string;
-      groups: string[];
-    };
-    iat: number;
-    exp: number;
   }
 
   export interface SignInRequest {
@@ -40,11 +23,11 @@ export namespace Auth {
     code: string;
   }
 
-  export interface AuthResponse {
-    accessToken: string;
-    refreshToken: string;
-    idToken: string;
-    expiresIn: number;
-    tokenType: string;
+  export interface User extends UserModel.Entity {
+    token: {
+      accessToken: string;
+      refreshToken: string;
+      expiresAt: number;
+    };
   }
 }

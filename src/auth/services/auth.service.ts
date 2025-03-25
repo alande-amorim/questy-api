@@ -1,129 +1,97 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import {
-  CognitoIdentityProviderClient,
-  InitiateAuthCommand,
-  SignUpCommand,
-  ConfirmSignUpCommand,
-  GetUserCommand,
-} from '@aws-sdk/client-cognito-identity-provider';
+import { decode } from 'jsonwebtoken';
 import { Auth } from '#domain/types/auth';
+import { UserRepo } from '../infra/repos/user.repo';
+import { CognitoService } from './cognito.service';
+import { User } from '#domain/types';
 
 @Injectable()
 export class AuthService {
-  private cognitoClient: CognitoIdentityProviderClient;
-  private clientId: string;
-  private userPoolId: string;
+  constructor(
+    private userRepo: UserRepo,
+    private cognitoService: CognitoService,
+  ) {}
 
-  constructor(private configService: ConfigService) {
-    this.cognitoClient = new CognitoIdentityProviderClient({
-      region: this.configService.get('AWS_REGION'),
-      credentials: {
-        accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
-        secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
-      },
-    });
-    this.clientId = this.configService.get('COGNITO_CLIENT_ID');
-    this.userPoolId = this.configService.get('COGNITO_USER_POOL_ID');
-  }
-
+  /**
+   * @TODO: upsert user into database?
+   */
   async signUp(signUpRequest: Auth.SignupRequest): Promise<void> {
-    try {
-      const command = new SignUpCommand({
-        ClientId: this.clientId,
-        Username: signUpRequest.email,
-        Password: signUpRequest.password,
-        UserAttributes: [
-          {
-            Name: 'name',
-            Value: signUpRequest.name,
-          },
-          {
-            Name: 'email',
-            Value: signUpRequest.email,
-          },
-        ],
-      });
-
-      await this.cognitoClient.send(command);
-    } catch (error) {
-      throw new UnauthorizedException('Failed to sign up user');
-    }
+    const signupResponse = await this.cognitoService.signUp(signUpRequest);
+    console.log(signupResponse);
+    // await this.syncUser({
+    //   sub: signupResponse.UserSub,
+    //   email: signUpRequest.email,
+    //   name: signUpRequest.name,
+    // });
   }
 
   async confirmSignUp(
     confirmSignUpRequest: Auth.ConfirmSignupRequest,
   ): Promise<void> {
-    try {
-      const command = new ConfirmSignUpCommand({
-        ClientId: this.clientId,
-        Username: confirmSignUpRequest.email,
-        ConfirmationCode: confirmSignUpRequest.code,
-      });
-
-      await this.cognitoClient.send(command);
-    } catch (error) {
-      throw new UnauthorizedException('Failed to confirm sign up');
-    }
+    await this.cognitoService.confirmSignUp(confirmSignUpRequest);
   }
 
-  async signIn(signInRequest: Auth.SignInRequest): Promise<Auth.AuthResponse> {
+  private async syncUser(user: Auth.ProviderUser): Promise<User.Entity> {
+    return await this.userRepo.upsertFromCognito(user);
+  }
+
+  async signIn(signInRequest: Auth.SignInRequest): Promise<Auth.User> {
     try {
-      const command = new InitiateAuthCommand({
-        AuthFlow: 'USER_PASSWORD_AUTH',
-        ClientId: this.clientId,
-        AuthParameters: {
-          USERNAME: signInRequest.email,
-          PASSWORD: signInRequest.password,
-        },
-      });
+      const response = await this.cognitoService.signIn(signInRequest);
 
-      const response = await this.cognitoClient.send(command);
+      const decodedAccessToken = decode(
+        response.AuthenticationResult.AccessToken,
+      );
+      const decodedId = decode(response.AuthenticationResult.IdToken);
+      const cognitoUser = {
+        sub: decodedId.sub,
+        email: decodedId.email,
+        name: decodedId.name,
+      };
 
-      if (!response.AuthenticationResult) {
-        throw new UnauthorizedException('Invalid credentials');
-      }
+      const dbUser = await this.syncUser(cognitoUser);
 
       return {
-        accessToken: response.AuthenticationResult.AccessToken,
-        refreshToken: response.AuthenticationResult.RefreshToken,
-        idToken: response.AuthenticationResult.IdToken,
-        expiresIn: response.AuthenticationResult.ExpiresIn,
-        tokenType: response.AuthenticationResult.TokenType,
+        ...dbUser,
+        token: {
+          accessToken: response.AuthenticationResult.AccessToken,
+          refreshToken: response.AuthenticationResult.RefreshToken,
+          expiresAt: decodedAccessToken.exp,
+        },
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid credentials');
     }
   }
 
-  async getUser(accessToken: string): Promise<Auth.CognitoUser> {
+  async getUser(accessToken: string): Promise<Auth.User> {
     try {
-      const command = new GetUserCommand({
-        AccessToken: accessToken,
-      });
+      const decodedAccessToken = decode(accessToken);
+      let user = await this.userRepo.findBySub(decodedAccessToken.sub);
 
-      const response = await this.cognitoClient.send(command);
-
-      const userAttributes = response.UserAttributes.reduce(
-        (acc, attr) => {
-          acc[attr.Name] = attr.Value;
+      if (!user) {
+        const response = await this.cognitoService.getUser(accessToken);
+        const cognitoUser = response.UserAttributes.reduce((acc, curr) => {
+          acc[curr.Name] = curr.Value;
           return acc;
-        },
-        {} as Record<string, string>,
-      );
+        }, {});
+        user = await this.syncUser({
+          sub: cognitoUser['sub'],
+          email: cognitoUser['email'],
+          name: cognitoUser['name'],
+        });
+      }
 
       return {
-        sub: response.Username,
-        email: userAttributes.email,
-        name: userAttributes.name,
-        email_verified: userAttributes.email_verified === 'true',
-        cognito: {
-          username: response.Username,
-          groups: [], // You might want to fetch groups separately
+        ...user,
+        token: {
+          accessToken: accessToken,
+          refreshToken: 'N/A',
+          expiresAt: decodedAccessToken.exp,
         },
       };
     } catch (error) {
-      throw new UnauthorizedException('Failed to get user information');
+      throw new UnauthorizedException('Invalid token');
     }
   }
 }

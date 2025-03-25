@@ -12,10 +12,8 @@ export class SigninRequestDTO implements Auth.SignInRequest {
 
   @ApiProperty({
     description: 'User password',
-    example: 'password123',
-    minLength: 8,
+    example: 'secret',
   })
   @IsString()
-  @MinLength(8)
   password: string;
 }

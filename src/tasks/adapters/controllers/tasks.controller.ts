@@ -21,7 +21,7 @@ import {
   TaskResponseDTO,
 } from './dtos/tasks.dto';
 import { AuthGuard } from '@auth/guards/auth.guard';
-import { CurrentUser } from 'src/auth/current-user.decorator';
+import { CurrentUser } from '@auth/decorators/current-user.decorator';
 import { Auth } from '#domain/types/auth';
 
 @ApiTags('tasks')
@@ -36,7 +36,7 @@ export class TasksController {
   @ApiResponse({ status: 201, type: TaskResponseDTO })
   async create(
     @Body() createTaskDto: CreateTaskDTO,
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<TaskResponseDTO> {
     console.log(user);
     return this.tasksService.create(createTaskDto);
@@ -47,7 +47,7 @@ export class TasksController {
   @ApiResponse({ status: 200, type: TaskResponseDTO })
   async findOne(
     @Param('id') id: string,
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<TaskResponseDTO> {
     console.log(user);
     return this.tasksService.findById(id);
@@ -58,7 +58,7 @@ export class TasksController {
   @ApiResponse({ status: 200, type: [TaskResponseDTO] })
   async findMany(
     @Param('projectId') projectId: string,
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<TaskResponseDTO[]> {
     console.log(user);
     return this.tasksService.findMany(projectId);
@@ -70,7 +70,7 @@ export class TasksController {
   async update(
     @Param('id') id: string,
     @Body() updateTaskDto: UpdateTaskDTO,
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<TaskResponseDTO> {
     console.log(user);
     return this.tasksService.update(id, updateTaskDto);
@@ -81,7 +81,7 @@ export class TasksController {
   @ApiResponse({ status: 204 })
   async remove(
     @Param('id') id: string,
-    @CurrentUser() user: Auth.CognitoUser,
+    @CurrentUser() user: Auth.User,
   ): Promise<void> {
     console.log(user);
     await this.tasksService.delete(id);

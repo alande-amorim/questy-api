@@ -63,11 +63,28 @@ export class AuthController {
             },
           },
         },
+        dbUser: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              example: '123e4567-e89b-12d3-a456-426614174000',
+            },
+            email: {
+              type: 'string',
+              example: 'user@example.com',
+            },
+            name: {
+              type: 'string',
+              example: 'John Doe',
+            },
+          },
+        },
       },
     },
   })
   @ApiBearerAuth('access-token')
-  async me(@CurrentUser() user: Auth.CognitoUser): Promise<Auth.CognitoUser> {
+  async me(@CurrentUser() user: Auth.User) {
     return user;
   }
 
@@ -142,51 +159,6 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Sign in successful',
-    schema: {
-      type: 'object',
-      properties: {
-        accessToken: {
-          type: 'string',
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        },
-        refreshToken: {
-          type: 'string',
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        },
-        idToken: {
-          type: 'string',
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        },
-        expiresIn: {
-          type: 'number',
-          example: 3600,
-        },
-        tokenType: {
-          type: 'string',
-          example: 'Bearer',
-        },
-      },
-    },
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Invalid credentials',
-  })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        email: {
-          type: 'string',
-          example: 'user@example.com',
-        },
-        password: {
-          type: 'string',
-          example: 'password123',
-        },
-      },
-      required: ['email', 'password'],
-    },
   })
   async signIn(
     @Body() credentials: SigninRequestDTO,

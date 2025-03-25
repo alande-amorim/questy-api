@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Auth } from '#domain/types/auth';
 
@@ -19,10 +19,8 @@ export class SignupRequestDTO implements Auth.SignupRequest {
 
   @ApiProperty({
     description: 'User password',
-    example: 'password123',
-    minLength: 8,
+    example: 'secret',
   })
   @IsString()
-  @MinLength(8)
   password: string;
 }

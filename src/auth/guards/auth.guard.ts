@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
-import { Auth } from '#domain/types/auth';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../services/auth.service';
 
@@ -33,7 +32,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtVerifier.verify(token);
+      await this.jwtVerifier.verify(token);
       const user = await this.authService.getUser(token);
       request.user = user;
       return true;
@@ -45,17 +44,5 @@ export class AuthGuard implements CanActivate {
   private extractTokenFromHeader(request: any): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
-  }
-
-  private mapJwtPayloadToCognitoUser(
-    payload: Auth.JwtPayload,
-  ): Auth.CognitoUser {
-    return {
-      sub: payload.sub,
-      email: payload.email,
-      name: payload.name,
-      email_verified: payload.email_verified,
-      cognito: payload.cognito,
-    };
   }
 }
