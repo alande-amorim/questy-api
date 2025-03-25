@@ -38,6 +38,7 @@ async function bootstrap() {
     )
     .addTag('auth')
     .addTag('projects')
+    .addTag('Project Invites')
     .addTag('tasks')
     .build();
 

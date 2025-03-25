@@ -40,9 +40,9 @@ export class UsersRepo implements IUsersRepo {
 
   async upsertFromCognito(user: Auth.ProviderUser): Promise<User.Entity> {
     return this.prisma.user.upsert({
-      where: { cognitoSub: user.sub },
+      where: { email: user.email },
       update: {
-        email: user.email,
+        cognitoSub: user.sub,
         name: user.name,
       },
       create: {

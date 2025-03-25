@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '#infra/prisma/prisma.service';
 import { Project } from '#domain/types/project';
 import { IProjectsRepo } from '../../application/interfaces/projects.repo.interface';
+import { User } from '#domain/types';
 
 @Injectable()
 export class ProjectsRepo implements IProjectsRepo {
@@ -40,5 +41,14 @@ export class ProjectsRepo implements IProjectsRepo {
     await this.prisma.project.delete({
       where: { id },
     });
+  }
+
+  async findByUserId(userId: User.Entity['id']): Promise<Project.Entity[]> {
+    const userProjects = await this.prisma.projectUser.findMany({
+      where: { userId },
+      include: { project: true },
+    });
+
+    return userProjects.map(({ project }) => project);
   }
 }

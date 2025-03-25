@@ -24,10 +24,6 @@ export class CognitoService implements ICognitoService {
   constructor(private configService: ConfigService) {
     this.cognitoClient = new CognitoIdentityProviderClient({
       region: this.configService.get('AWS_REGION'),
-      credentials: {
-        accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
-        secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
-      },
     });
     this.clientId = this.configService.get('COGNITO_CLIENT_ID');
     this.userPoolId = this.configService.get('COGNITO_USER_POOL_ID');
@@ -113,37 +109,44 @@ export class CognitoService implements ICognitoService {
   async createUser(
     data: Auth.SignupRequest,
   ): Promise<AdminCreateUserCommandOutput> {
-    const createUserCommand = new AdminCreateUserCommand({
-      UserPoolId: this.configService.get('AWS_COGNITO_USER_POOL_ID'),
-      Username: data.email,
-      UserAttributes: [
-        {
-          Name: 'email',
-          Value: data.email,
-        },
-        {
-          Name: 'name',
-          Value: data.name,
-        },
-        {
-          Name: 'email_verified',
-          Value: 'true',
-        },
-      ],
-    });
+    try {
+      const createUserCommand = new AdminCreateUserCommand({
+        UserPoolId: this.configService.get('COGNITO_USER_POOL_ID'),
+        Username: data.email,
+        UserAttributes: [
+          {
+            Name: 'email',
+            Value: data.email,
+          },
+          {
+            Name: 'name',
+            Value: data.name,
+          },
+          {
+            Name: 'email_verified',
+            Value: 'true',
+          },
+        ],
+      });
 
-    const cognitoUser = await this.cognitoClient.send(createUserCommand);
+      const cognitoUser = await this.cognitoClient.send(createUserCommand);
 
-    // sets the user password
-    const setPasswordCommand = new AdminSetUserPasswordCommand({
-      UserPoolId: this.configService.get('AWS_COGNITO_USER_POOL_ID'),
-      Username: data.email,
-      Password: data.password,
-      Permanent: true,
-    });
+      // do we need this?
+      if (false) {
+        const setPasswordCommand = new AdminSetUserPasswordCommand({
+          UserPoolId: this.configService.get('COGNITO_USER_POOL_ID'),
+          Username: data.email,
+          Password: data.password,
+          Permanent: true,
+        });
 
-    await this.cognitoClient.send(setPasswordCommand);
+        await this.cognitoClient.send(setPasswordCommand);
+      }
 
-    return cognitoUser;
+      return cognitoUser;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error creating authentication');
+    }
   }
 }

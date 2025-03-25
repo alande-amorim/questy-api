@@ -1,3 +1,4 @@
+import { User } from '#domain/types';
 import { Project } from '#domain/types/project';
 import { IProjectsRepo } from '../interfaces';
 
@@ -12,8 +13,8 @@ export class ProjectsService {
     return this.projectsRepository.findById(id);
   }
 
-  async findMany(): Promise<Project.Entity[]> {
-    return this.projectsRepository.findMany();
+  async findMany(userId: User.Entity['id']): Promise<Project.Entity[]> {
+    return this.projectsRepository.findByUserId(userId);
   }
 
   async update(id: string, data: Project.UpdateDTO): Promise<Project.Entity> {

@@ -1,9 +1,9 @@
 import { ICognitoService } from '#domain/interfaces/cognito.interface';
 import { IUsersRepo } from '#domain/interfaces/users-repo.interface';
-import { PrismaService } from '#infra/prisma/prisma.service';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ProjectsController } from '@projects/adapters/controllers/projects.controller';
+import { InviteController } from '@projects/adapters/controllers/invite.controller';
 import { InviteService } from '@projects/application/services/invite.service';
 import { ProjectsService } from '@projects/application/services/projects.service';
 import { ProjectsRepo } from '@projects/infra/repos/projects.repo';
@@ -11,15 +11,16 @@ import { ProjectUsersRepo } from './repos/project-users.repo';
 
 @Module({
   imports: [ConfigModule],
-  controllers: [ProjectsController],
+  controllers: [ProjectsController, InviteController],
   providers: [
+    ProjectUsersRepo,
     {
       provide: 'IProjectsRepo',
       useClass: ProjectsRepo,
     },
     {
       provide: InviteService,
-      inject: [PrismaService, 'ICognitoService', 'IUsersRepo'],
+      inject: ['ICognitoService', 'IUsersRepo', ProjectUsersRepo],
       useFactory: (
         cognitoService: ICognitoService,
         usersRepo: IUsersRepo,

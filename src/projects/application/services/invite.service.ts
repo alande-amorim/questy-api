@@ -48,6 +48,7 @@ export class InviteService {
 
     // TODO: Send email with the invite link
     // The link should include the token and the invite ID
+    console.log('send invite: ' + invite.inviteToken);
 
     return invite;
   }

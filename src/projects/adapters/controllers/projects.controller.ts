@@ -13,6 +13,7 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
+  ApiParam,
 } from '@nestjs/swagger';
 import { ProjectsService } from '../../application/services/projects.service';
 import { CreateProjectDTO, ProjectResponseDTO, UpdateProjectDTO } from './dtos';
@@ -44,6 +45,11 @@ export class ProjectsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a project by ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do projeto a ser atualizado',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   @ApiResponse({
     status: 200,
     description: 'Project found',
@@ -70,11 +76,16 @@ export class ProjectsController {
   async findMany(
     @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO[]> {
-    return this.projectsService.findMany();
+    return this.projectsService.findMany(user.id);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update a project' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do projeto a ser atualizado',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   @ApiResponse({
     status: 200,
     description: 'Project updated successfully',
