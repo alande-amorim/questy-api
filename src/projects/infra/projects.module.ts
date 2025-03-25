@@ -31,9 +31,12 @@ import { ProjectUsersRepo } from './repos/project-users.repo';
     },
     {
       provide: ProjectsService,
-      inject: ['IProjectsRepo'],
-      useFactory: (projectsRepo: ProjectsRepo) => {
-        return new ProjectsService(projectsRepo);
+      inject: ['IProjectsRepo', ProjectUsersRepo],
+      useFactory: (
+        projectsRepo: ProjectsRepo,
+        projectUsersRepo: ProjectUsersRepo,
+      ) => {
+        return new ProjectsService(projectsRepo, projectUsersRepo);
       },
     },
   ],

@@ -22,6 +22,7 @@ export class ProjectUsersRepo {
     invitedBy: string;
     invitedAt: Date;
     inviteToken: string;
+    acceptedAt?: Date;
   }) {
     return this.prisma.projectUser.create({
       data,

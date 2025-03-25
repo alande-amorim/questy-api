@@ -40,7 +40,7 @@ export class ProjectsController {
     @Body() data: CreateProjectDTO,
     @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO> {
-    return this.projectsService.create(data);
+    return this.projectsService.create(data, user);
   }
 
   @Get(':id')

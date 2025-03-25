@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class AcceptInviteDTO {
   @ApiProperty({
@@ -13,6 +13,7 @@ export class AcceptInviteDTO {
     description: 'Nome do usuário',
     example: 'John Doe',
   })
+  @IsOptional()
   @IsString()
   name?: string;
 
@@ -20,6 +21,7 @@ export class AcceptInviteDTO {
     description: 'Senha do usuário',
     example: 'secret',
   })
+  @IsOptional()
   @IsString()
   password?: string;
 }
