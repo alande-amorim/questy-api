@@ -15,11 +15,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { TasksService } from '../../application/services/tasks.service';
-import {
-  CreateTaskDTO,
-  UpdateTaskDTO,
-  TaskResponseDTO,
-} from './dtos/tasks.dto';
+import { CreateTaskDTO, UpdateTaskDTO, TaskResponseDTO } from './dtos';
 import { AuthGuard } from '@auth/guards/auth.guard';
 import { CurrentUser } from '@auth/decorators/current-user.decorator';
 import { Auth } from '#domain/types/auth';

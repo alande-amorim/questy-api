@@ -40,9 +40,15 @@ export class TasksRepo implements ITasksRepo {
   }
 
   async findMany(projectId: string): Promise<Task.Entity[]> {
-    return this.prisma.task.findMany({
+    const tasks = await this.prisma.task.findMany({
       where: { projectId },
+      include: {
+        assignee: true,
+        reporter: true,
+      },
     });
+
+    return tasks;
   }
 
   async update(id: string, data: Task.UpdateDTO): Promise<Task.Entity> {

@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Task } from '#domain/types';
+import { Task, User } from '#domain/types';
+import { UserDTO } from './user.dto';
 
-export class TaskResponseDTO implements Task.Entity {
+export class TaskResponseDTO implements Task.WithRelations {
   @ApiProperty({
     description: 'Task ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
@@ -22,8 +23,8 @@ export class TaskResponseDTO implements Task.Entity {
 
   @ApiProperty({
     description: 'Task status',
-    example: 'TODO',
-    enum: ['TODO', 'IN_PROGRESS', 'DONE'],
+    example: 'BACKLOG',
+    enum: Task.TaskStatus,
   })
   status: Task.TaskStatus;
 
@@ -63,4 +64,20 @@ export class TaskResponseDTO implements Task.Entity {
     example: '2024-03-20T10:00:00Z',
   })
   updatedAt: Date;
+
+  @ApiProperty({
+    description: 'Assignee',
+    type: UserDTO,
+    required: false,
+    nullable: true,
+  })
+  assignee?: User.Entity;
+
+  @ApiProperty({
+    description: 'Reporter',
+    type: UserDTO,
+    required: true,
+    nullable: false,
+  })
+  reporter?: User.Entity;
 }
