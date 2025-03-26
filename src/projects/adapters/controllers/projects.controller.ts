@@ -61,7 +61,6 @@ export class ProjectsController {
   })
   async findById(
     @Param('id') id: Project.Entity['id'],
-    @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO | null> {
     return this.projectsService.findById(id);
   }
@@ -98,7 +97,6 @@ export class ProjectsController {
   async update(
     @Param('id') id: Project.Entity['id'],
     @Body() data: UpdateProjectDTO,
-    @CurrentUser() user: Auth.User,
   ): Promise<ProjectResponseDTO> {
     return this.projectsService.update(id, data);
   }
@@ -113,10 +111,7 @@ export class ProjectsController {
     status: 404,
     description: 'Project not found',
   })
-  async delete(
-    @Param('id') id: Project.Entity['id'],
-    @CurrentUser() user: Auth.User,
-  ): Promise<void> {
+  async delete(@Param('id') id: Project.Entity['id']): Promise<void> {
     return this.projectsService.delete(id);
   }
 }

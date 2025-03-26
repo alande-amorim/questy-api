@@ -14,6 +14,12 @@ export class ProjectResponseDTO implements Project.Entity {
   id: string;
 
   @ApiProperty({
+    description: 'Project code',
+    example: 'PRJ',
+  })
+  code: string;
+
+  @ApiProperty({
     description: 'Project name',
     example: 'My Project',
   })
@@ -50,4 +56,16 @@ export class ProjectResponseDTO implements Project.Entity {
     ],
   })
   tasks?: Task.Entity[];
+
+  @ApiProperty({
+    description: 'Project counts',
+    example: {
+      tasks: 10,
+      users: 2,
+    },
+  })
+  _count?: {
+    tasks: number;
+    users: number;
+  };
 }
