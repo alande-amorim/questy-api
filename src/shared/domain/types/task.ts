@@ -14,6 +14,7 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
+    acceptanceCriteria?: string;
     status: TaskStatus;
     storyPoints: number;
     assigneeId?: string;
@@ -32,6 +33,7 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
+    acceptanceCriteria?: string;
     status?: TaskStatus;
     storyPoints: number;
     assigneeId?: string;
@@ -41,6 +43,7 @@ export namespace Task {
   export interface UpdateDTO {
     title?: string;
     description?: string;
+    acceptanceCriteria?: string;
     status?: TaskStatus;
     storyPoints?: number;
     assigneeId?: string;

@@ -53,13 +53,14 @@ model ProjectUser {
 }
 
 model Task {
-  id          String     @id @default(uuid())
-  code        String     @unique
-  projectId   String
-  title       String
-  description String
-  status      TaskStatus @default(BACKLOG)
-  storyPoints Int
+  id                 String     @id @default(uuid())
+  code               String     @unique
+  projectId          String
+  title              String
+  description        String
+  acceptanceCriteria String?
+  status             TaskStatus @default(BACKLOG)
+  storyPoints        Int
 
   assigneeId String?
   reporterId String

@@ -7,7 +7,6 @@ import {
   Min,
   Max,
   IsUUID,
-  Length,
   IsOptional,
 } from 'class-validator';
 import { Task } from '#domain/types';
@@ -24,7 +23,6 @@ export class CreateTaskDTO implements ICreateTaskDTO {
   })
   @IsString()
   @IsNotEmpty()
-  @Length(3, 100, { message: 'Title must be between 3 and 100 characters' })
   title: string;
 
   @ApiProperty({
@@ -34,6 +32,15 @@ export class CreateTaskDTO implements ICreateTaskDTO {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @ApiProperty({
+    description: 'Task acceptance criteria',
+    example: 'Acceptance criteria for the task',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  acceptanceCriteria?: string;
 
   @ApiProperty({
     description: 'Task status',

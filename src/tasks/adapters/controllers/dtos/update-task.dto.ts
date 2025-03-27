@@ -19,7 +19,6 @@ export class UpdateTaskDTO implements Task.UpdateDTO {
   })
   @IsString()
   @IsOptional()
-  @Length(3, 100, { message: 'Title must be between 3 and 100 characters' })
   title?: string;
 
   @ApiProperty({
@@ -29,10 +28,17 @@ export class UpdateTaskDTO implements Task.UpdateDTO {
   })
   @IsString()
   @IsOptional()
-  @Length(10, 1000, {
-    message: 'Description must be between 10 and 1000 characters',
-  })
   description?: string;
+
+  @ApiProperty({
+    description: 'Task acceptance criteria',
+    example: 'Updated task acceptance criteria',
+    nullable: true,
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  acceptanceCriteria?: string;
 
   @ApiProperty({
     description: 'Task status',

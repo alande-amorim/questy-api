@@ -28,6 +28,13 @@ export class TaskResponseDTO implements Task.WithRelations {
   description: string;
 
   @ApiProperty({
+    description: 'Task acceptance criteria',
+    example: 'Acceptance criteria for the task',
+    nullable: true,
+  })
+  acceptanceCriteria?: string;
+
+  @ApiProperty({
     description: 'Task status',
     example: 'BACKLOG',
     enum: Task.TaskStatus,
