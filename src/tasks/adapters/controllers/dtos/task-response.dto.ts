@@ -10,6 +10,12 @@ export class TaskResponseDTO implements Task.WithRelations {
   id: string;
 
   @ApiProperty({
+    description: 'Task code',
+    example: 'PRJ-001',
+  })
+  code: string;
+
+  @ApiProperty({
     description: 'Task title',
     example: 'Implement feature X',
   })

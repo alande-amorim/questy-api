@@ -10,6 +10,7 @@ import { User } from '.';
 export namespace Task {
   export interface Entity {
     id: string;
+    code: string;
     projectId: string;
     title: string;
     description: string;
@@ -17,8 +18,8 @@ export namespace Task {
     storyPoints: number;
     assigneeId?: string;
     reporterId: string;
-    createdAt: Date;
     updatedAt: Date;
+    createdAt: Date;
   }
 
   export interface WithRelations extends Entity {
@@ -31,27 +32,24 @@ export namespace Task {
     projectId: string;
     title: string;
     description: string;
-    status: TaskStatus;
+    status?: TaskStatus;
     storyPoints: number;
     assigneeId?: string;
     reporterId: string;
   }
 
   export interface UpdateDTO {
-    projectId?: string;
     title?: string;
     description?: string;
     status?: TaskStatus;
     storyPoints?: number;
     assigneeId?: string;
-    reporterId?: string;
   }
 
   export const TaskStatus = {
-        BACKLOG: 'BACKLOG',
-DOING: 'DOING',
-DONE: 'DONE',
-      } as const;
-      export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus];
-      
+    BACKLOG: 'BACKLOG',
+    DOING: 'DOING',
+    DONE: 'DONE',
+  } as const;
+  export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus];
 }
