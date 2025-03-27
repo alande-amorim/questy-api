@@ -36,8 +36,8 @@ export class UpdateTaskDTO implements Task.UpdateDTO {
 
   @ApiProperty({
     description: 'Task status',
-    example: 'IN_PROGRESS',
-    enum: ['TODO', 'IN_PROGRESS', 'DONE'],
+    example: 'BACKLOG',
+    enum: Task.TaskStatus,
     required: false,
   })
   @IsEnum(Task.TaskStatus)

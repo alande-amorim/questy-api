@@ -4,8 +4,7 @@
  */
 
 /* eslint-disable */
-import { ProjectUser } from '.';
-import { Task } from '.';
+import { Task, User } from '.';
 
 export namespace Project {
   export interface Entity {
@@ -18,7 +17,7 @@ export namespace Project {
   }
 
   export interface WithRelations extends Entity {
-    users?: ProjectUser.Entity[];
+    users?: User.Entity[];
     tasks?: Task.Entity[];
   }
 

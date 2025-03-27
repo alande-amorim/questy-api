@@ -33,9 +33,6 @@ export class CreateTaskDTO implements ICreateTaskDTO {
   })
   @IsString()
   @IsNotEmpty()
-  @Length(10, 1000, {
-    message: 'Description must be between 10 and 1000 characters',
-  })
   description: string;
 
   @ApiProperty({
@@ -60,6 +57,7 @@ export class CreateTaskDTO implements ICreateTaskDTO {
   @ApiProperty({
     description: 'Assignee ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
+    nullable: true,
   })
   @IsUUID()
   @IsOptional()

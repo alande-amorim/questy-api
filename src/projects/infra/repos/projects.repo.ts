@@ -55,9 +55,19 @@ export class ProjectsRepo implements IProjectsRepo {
   }
 
   async findById(id: string): Promise<Project.Entity | null> {
-    return this.prisma.project.findUnique({
+    const project = await this.prisma.project.findUnique({
       where: { id },
+      include: {
+        users: {
+          include: {
+            user: true,
+          },
+        },
+        tasks: true,
+      },
     });
+
+    return project;
   }
 
   async findByCode(code: string): Promise<Project.Entity | null> {

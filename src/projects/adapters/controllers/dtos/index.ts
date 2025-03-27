@@ -5,3 +5,5 @@ export * from './accept-invite.dto';
 export * from './create-invite.dto';
 export * from './invite-response.dto';
 export * from './user-response.dto';
+export * from './project-response.dto';
+export * from './task-response.dto';

@@ -23,12 +23,16 @@ export class TasksRepo implements ITasksRepo {
     reporterId,
     ...data
   }: Task.CreateDTO): Promise<Task.Entity> {
+    const user = await this.prisma.user.findUnique({
+      where: { cognitoSub: reporterId },
+    });
+
     return this.prisma.task.create({
       data: {
         ...data,
         ...withConnect('assignee', assigneeId),
-        ...withConnect('reporter', reporterId),
         ...withConnect('project', projectId),
+        ...withConnect('reporter', user.id),
       },
     });
   }
